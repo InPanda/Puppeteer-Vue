@@ -17,6 +17,14 @@
           v-model="form.save_path"
         ></el-input>
       </el-form-item>
+      <el-form-item label="截图类型">
+        <el-switch
+          style="width:100%"
+          v-model="form.isMobile"
+          active-text="iphone X"
+          inactive-text="web"
+        ></el-switch>
+      </el-form-item>
       <el-form-item>
         <el-button
           type="primary"
@@ -37,6 +45,7 @@ export default {
         id: '001',
         url: 'https://item.jd.com/10031792658506.html',
         save_path: 'result',
+        isMobile: false
       }
     }
   },

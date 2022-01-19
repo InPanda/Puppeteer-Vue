@@ -28,7 +28,7 @@ async function fixPages(ws, page, links, logger) {
   ) {
     createDirSync(path.join(path.resolve(__dirname, "../", links.save_path)));
   }
-  if (links.type === 1) {
+  if (links.isMobile) {
     await page.emulate(iPhoneX);
   } else {
     await page.emulate({

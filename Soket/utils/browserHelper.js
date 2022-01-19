@@ -14,7 +14,7 @@ module.exports = class BrowserHelper {
     async init() {
         this.pages = [];
         this.browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             defaultViewport: null,
         });
         for (let index = 0; index < this.maxPageSize; index++) {
