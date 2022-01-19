@@ -1,7 +1,7 @@
 const loghelper = require('./loghelper');
 const { joinImages } = require('join-images');
 const browserHeaderHandler = require('./browserHeaderHandler');
-const { sleep } = require('../utils/utilityFuncs');
+const { sleep } = require('./utilityFuncs');
 
 class ScreenshotHelper {
     constructor(page) {
@@ -159,7 +159,7 @@ class ScreenshotHelper {
                         clip: {
                             x: 0,
                             y: i * 10000,
-                            width: clientWidth,
+                            width: bw,
                             height: i === areaCount - 1 ? totalHeight % 10000 : 10000,
                             scale: 1,
                         },

@@ -1,6 +1,6 @@
 <template>
   <el-container
-    :direction="vertical"
+    direction="vertical"
     class="container"
   >
     <el-form
@@ -8,19 +8,19 @@
       :model="form"
       label-width="80px"
     >
-      <el-form-item label="活动名称">
-        <el-input v-model="form.name"></el-input>
+      <el-form-item label="网址">
+        <el-input v-model="form.url"></el-input>
       </el-form-item>
-      <el-form-item label="活动形式">
+      <el-form-item label="截图路径">
         <el-input
           type="textarea"
-          v-model="form.desc"
+          v-model="form.save_path"
         ></el-input>
       </el-form-item>
       <el-form-item>
         <el-button
           type="primary"
-          @click="connectServer()"
+          @click="connectServer"
         >连接服务</el-button>
         <el-button>断开服务</el-button>
       </el-form-item>
@@ -34,28 +34,30 @@ export default {
   data() {
     return {
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        id: '001',
+        url: 'https://item.jd.com/10031792658506.html',
+        save_path: 'result',
       }
     }
   },
   methods: {
     connectServer() {
+      const str = new Array(1).fill(this.form)
       if ("WebSocket" in window) {
         let ws = new WebSocket('ws://127.0.0.1:9669');
         ws.onopen = function () {
-          ws.send(str);
+          ws.send(JSON.stringify(str));
         };
-        ws.onmessage = function (evt) {
+        ws.onmessage = (evt) => {
           let received_msg = evt.data;
-          console.log(received_msg);
-          document.write(`${received_msg}\n\n`)
+          this.$message({
+            type: "success",
+            message: received_msg,
+            icon: "success",
+            top: "30px",
+            timeOut: 8,
+            align: "left",
+          })
         };
         ws.onclose = function () {
           console.log("连接已关闭...");
