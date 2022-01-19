@@ -9,11 +9,15 @@
       label-width="80px"
     >
       <el-form-item label="网址">
-        <el-input v-model="form.url"></el-input>
+        <el-input
+          placeholder="请输入完整Url,多条网站截图请输入 ;(英文分号)隔开"
+          v-model="form.url"
+          type="textarea"
+        ></el-input>
       </el-form-item>
       <el-form-item label="截图路径">
         <el-input
-          type="textarea"
+          placeholder="截图文件存放路径，相对于工程目录"
           v-model="form.save_path"
         ></el-input>
       </el-form-item>
@@ -30,34 +34,46 @@
           type="primary"
           @click="connectServer"
         >连接服务</el-button>
-        <el-button>断开服务</el-button>
+        <el-button @click="closeConnect">断开服务</el-button>
       </el-form-item>
     </el-form>
   </el-container>
 </template>
 
 <script>
+import { PrefixZero } from '../utils/utils.js';
 export default {
   name: 'RequestServer',
   data() {
     return {
       form: {
-        id: '001',
-        url: 'https://item.jd.com/10031792658506.html',
-        save_path: 'result',
+        url: '',
+        save_path: '',
         isMobile: false
-      }
+      },
+      dataArr: [],
+      ws: null
     }
   },
   methods: {
     connectServer() {
-      const str = new Array(1).fill(this.form)
+      const { url, save_path, isMobile } = this.form
+      const url_arr = url.split(';')
+      for (let i = 0; i < url_arr.length; i++) {
+        const url = url_arr[i];
+        this.dataArr.push({
+          id: PrefixZero(i + 1, 5),
+          url,
+          save_path,
+          isMobile
+        })
+      }
       if ("WebSocket" in window) {
-        let ws = new WebSocket('ws://127.0.0.1:9669');
-        ws.onopen = function () {
-          ws.send(JSON.stringify(str));
+        this.ws = new WebSocket('ws://127.0.0.1:9669');
+        this.ws.onopen = () => {
+          this.ws.send(JSON.stringify(this.dataArr));
         };
-        ws.onmessage = (evt) => {
+        this.ws.onmessage = (evt) => {
           let received_msg = evt.data;
           this.$message({
             type: "success",
@@ -68,12 +84,16 @@ export default {
             align: "left",
           })
         };
-        ws.onclose = function () {
+        this.ws.onclose = function () {
           console.log("连接已关闭...");
         };
       } else {
         console.log("您的浏览器不支持 WebSocket!");
       }
+    },
+    closeConnect() {
+      this.ws.close()
+      this.ws = null
     }
   }
 }
