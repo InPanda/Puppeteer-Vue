@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="sendMsgToSocket()">点击连接服务</button>
+</body>
+<script>
+    const str = `[
+  {"id":1001,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1002,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1003,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1004,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1005,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1006,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1007,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1008,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1009,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1010,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1011,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1012,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1013,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1014,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1015,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1016,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1017,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"},
+  {"id":1018,"url":"https://item.jd.com/10031792658506.html","save_path":"D:/Soket/result"}
+]`
+    //     const str = `[
+    //   {"id":1001,"url":"https://www.cnblogs.com/","save_path":"D:/Soketss/result"},
+    //   {"id":1002,"url":"https://www.cnblogs.com/yexiaochai/p/15679691.html","save_path":"D:/Soketss/result"},
+    //   {"id":1003,"url":"https://www.cnblogs.com/yexiaochai/tag/%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8/","save_path":"D:/Soketss/result"}
+
+    // ]`
+
+    function sendMsgToSocket() {
+        if ("WebSocket" in window) {
+            let ws = new WebSocket('ws://127.0.0.1:9669');
+            ws.onopen = function () {
+                ws.send(str);
+            };
+            ws.onmessage = function (evt) {
+                let received_msg = evt.data;
+                console.log(received_msg);
+                document.write(`${received_msg}\n\n`)
+            };
+            ws.onclose = function () {
+                console.log("连接已关闭...");
+            };
+        } else {
+            console.log("您的浏览器不支持 WebSocket!");
+        }
+    }
+</script>
+
+</html>

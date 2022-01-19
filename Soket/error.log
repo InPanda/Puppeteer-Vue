@@ -1,0 +1,43 @@
+[2021-12-17T15:29:32.359] [ERROR] capture - 链接异常：Error: listen EADDRINUSE: address already in use :::9669
+[2021-12-17T15:34:57.002] [ERROR] capture - websocket 已连接
+[2021-12-17T15:36:14.794] [ERROR] capture - websocket 已连接
+[2021-12-17T15:37:28.674] [ERROR] capture - 截图异常
+[2021-12-17T15:37:44.043] [ERROR] capture - 截图异常
+[2021-12-17T15:37:59.092] [ERROR] capture - 截图异常
+[2021-12-17T15:38:05.725] [ERROR] capture - 截图异常
+[2021-12-17T15:38:12.134] [ERROR] capture - 截图异常
+[2021-12-17T15:38:15.327] [ERROR] capture - 截图异常
+[2021-12-17T15:38:17.580] [ERROR] capture - 截图异常
+[2021-12-17T15:39:30.976] [ERROR] capture - 截图异常
+[2021-12-17T15:40:44.341] [ERROR] capture - 截图异常
+[2021-12-17T15:40:53.476] [ERROR] capture - websocket 已连接
+[2021-12-17T15:40:54.611] [ERROR] capture - 截图异常
+[2021-12-17T15:50:05.999] [ERROR] capture - websocket 已连接
+[2021-12-17T15:50:34.054] [ERROR] capture - 截图异常
+[2021-12-17T15:50:34.687] [ERROR] capture - 截图异常
+[2021-12-17T15:50:34.967] [ERROR] capture - 截图异常
+[2021-12-17T15:50:35.873] [ERROR] capture - 截图异常
+[2021-12-17T15:50:37.216] [ERROR] capture - 截图异常
+[2021-12-17T15:50:37.473] [ERROR] capture - 截图异常
+[2021-12-17T15:50:39.365] [ERROR] capture - 截图异常
+[2021-12-17T15:50:40.918] [ERROR] capture - 截图异常
+[2021-12-17T15:50:45.791] [ERROR] capture - 截图异常
+[2021-12-17T15:50:46.904] [ERROR] capture - 截图异常
+[2021-12-17T15:53:08.231] [ERROR] capture - 添加伪浏览器地址栏失败,等待超时
+[2021-12-17T15:54:26.012] [ERROR] capture - websocket 已连接
+[2021-12-17T15:57:20.596] [ERROR] capture - websocket 已连接
+[2021-12-17T15:58:32.212] [ERROR] capture - 截图异常
+[2021-12-17T15:59:43.291] [ERROR] capture - websocket 已连接
+[2021-12-17T15:59:43.298] [ERROR] capture - websocket 已连接
+[2021-12-17T16:01:10.999] [ERROR] capture - websocket 已连接
+[2021-12-17T16:02:02.212] [ERROR] capture - 截图异常
+[2021-12-17T16:02:18.164] [ERROR] capture - 截图异常
+[2021-12-17T16:02:20.035] [ERROR] capture - 截图异常
+[2021-12-17T16:06:17.572] [ERROR] capture - websocket 已连接
+[2021-12-17T16:18:28.354] [ERROR] capture - websocket 已连接
+[2021-12-17T16:18:52.184] [ERROR] capture - websocket 已连接
+[2021-12-17T16:18:57.177] [ERROR] capture - websocket 已连接
+[2021-12-17T16:28:10.184] [ERROR] capture - websocket 已连接
+[2021-12-17T16:28:41.233] [ERROR] capture - websocket 已连接
+[2022-01-19T10:33:11.546] [ERROR] capture - websocket 已连接
+[2022-01-19T10:40:27.876] [ERROR] capture - websocket 已连接
