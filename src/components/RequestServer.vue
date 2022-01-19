@@ -75,14 +75,11 @@ export default {
         };
         this.ws.onmessage = (evt) => {
           let received_msg = evt.data;
-          this.$message({
-            type: "success",
+          this.$notify({
+            title: '收到socket消息',
             message: received_msg,
-            icon: "success",
-            top: "30px",
-            timeOut: 8,
-            align: "left",
-          })
+            type: 'success'
+          });
         };
         this.ws.onclose = function () {
           console.log("连接已关闭...");
@@ -94,6 +91,14 @@ export default {
     closeConnect() {
       this.ws.close()
       this.ws = null
+      this.$message({
+        type: "success",
+        message: 'socket已断开',
+        icon: "success",
+        top: "30px",
+        timeOut: 8,
+        align: "left",
+      })
     }
   }
 }
