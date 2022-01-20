@@ -1,12 +1,29 @@
 <template>
-  <div id="index" ref="appRef">
+  <div
+    id="index"
+    ref="appRef"
+  >
     <div class="bg">
       <dv-loading v-if="loading">Loading...</dv-loading>
-      <div v-else class="host-body">
+      <div
+        v-else
+        class="host-body"
+        :class="[
+      'window',
+      hideCursor ? 'cursor__none' : '',
+      { fullWindow: isFullScreen },
+    ]"
+        ref="window"
+        @dblclick="toggleFullScreen"
+        id="full-screen"
+      >
         <div class="d-flex jc-center">
           <dv-decoration-10 class="dv-dec-10" />
           <div class="d-flex jc-center">
-            <dv-decoration-8 class="dv-dec-8" :color="['#568aea', '#000000']" />
+            <dv-decoration-8
+              class="dv-dec-8"
+              :color="['#568aea', '#000000']"
+            />
             <div class="title">
               <span class="title-text">大数据可视化平台</span>
               <dv-decoration-6
@@ -41,9 +58,7 @@
             </div>
             <div class="react-right mr-4 react-l-s">
               <span class="react-after"></span>
-              <span class="text"
-                >{{ dateYear }} {{ dateWeek }} {{ dateDay }}</span
-              >
+              <span class="text">{{ dateYear }} {{ dateWeek }} {{ dateDay }}</span>
             </div>
           </div>
         </div>
@@ -93,6 +108,7 @@
 
 <script>
 import drawMixin from "@/utils/drawMixin";
+import { waitLoaded } from "@/utils/utils";
 import { formatTime } from '@/utils/index.js'
 import centerLeft1 from './centerLeft1'
 import centerLeft2 from './centerLeft2'
@@ -103,9 +119,11 @@ import bottomLeft from './bottomLeft'
 import bottomRight from './bottomRight'
 
 export default {
-  mixins: [ drawMixin ],
+  mixins: [drawMixin],
   data() {
     return {
+      isFullScreen: false,
+      hideCursor: false,
       timing: null,
       loading: true,
       dateDay: null,
@@ -123,13 +141,7 @@ export default {
     bottomLeft,
     bottomRight
   },
-  mounted() {
-    this.timeFn()
-    this.cancelLoading()
-  },
-  beforeDestroy () {
-    clearInterval(this.timing)
-  },
+
   methods: {
     timeFn() {
       this.timing = setInterval(() => {
@@ -142,11 +154,89 @@ export default {
       setTimeout(() => {
         this.loading = false
       }, 500)
+    },
+    clickBoard() {
+      if (!this.showDropdown) return;
+      else {
+        this.showDropdown = false;
+      }
+    },
+    toggleFullScreen() {
+      const element = this.$refs.window;
+      if (!this.isFullScreen) {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.msRequestFullscreen) {
+          element.msRequestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+          element.webkitRequestFullscreen();
+        }
+        // document.querySelector("body").style.cursor = "none";
+        this.isFullScreen = true;
+      }
+    },
+    windowResize() {
+      const bodyWidth = getComputedStyle(
+        document.querySelector("body")
+      ).getPropertyValue("width");
+      const windowWidth = getComputedStyle(
+        document.querySelector("#full-screen")
+      ).getPropertyValue("width");
+      if (bodyWidth !== windowWidth) {
+        this.isFullScreen = false;
+      }
+    },
+    // 监听鼠标移动事件
+    listenMouseMove() {
+      this.hideCursor = false;
+      clearTimeout(this.timeoutTimer);
+      this.timeoutTimer = setTimeout(() => {
+        this.hideCursor = true;
+      }, 3000);
     }
-  }
+  },
+  watch: {
+    isFullScreen(val) {
+      const screen = this.$refs.window;
+      if (val) {
+        // 全屏模式下监听鼠标移动
+        this.hideCursor = true;
+        screen.addEventListener("mousemove", this.listenMouseMove);
+      } else {
+        // 非全屏模式下取消监听，恢复鼠标光标
+        this.hideCursor = false;
+        screen.removeEventListener("mousemove", this.listenMouseMove);
+      }
+    },
+  },
+  mounted() {
+    this.timeFn()
+    this.cancelLoading()
+    waitLoaded(200, "#full-screen", 2000, () => {
+      const w = document.querySelector("#full-screen").clientWidth;
+      document.querySelector("#full-screen").style.height = `${w * (1080 / 1920)
+        }px`;
+      window.addEventListener("resize", this.windowResize);
+    });
+  },
+  beforeDestroy() {
+    clearInterval(this.timing);
+    window.removeEventListener("resize", this.windowResize);
+  },
 }
 </script>
 
 <style lang="scss">
 @import '@/assets/scss/index.scss';
+.window {
+  &.fullWindow {
+    width: 100vw;
+    height: 100vh;
+  }
+  &.cursor__none {
+    cursor: none;
+  }
+}
 </style>
