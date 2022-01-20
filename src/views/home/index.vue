@@ -41,9 +41,9 @@
 </template>
 
 <script>
-import { PrefixZero } from '../utils/utils.js';
+import { PrefixZero } from '@/utils/utils.js';
 export default {
-  name: 'RequestServer',
+  name: 'index.vue',
   data() {
     return {
       form: {
