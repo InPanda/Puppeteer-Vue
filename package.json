@@ -11,8 +11,11 @@
     "socketServe": "node Soket/index.js"
   },
   "dependencies": {
+    "@jiaminghi/data-view": "^2.7.4",
+    "@types/echarts": "^4.4.6",
     "axios": "^0.25.0",
     "concurrently": "^7.0.0",
+    "echarts": "^3.6.2",
     "element-ui": "^2.15.6",
     "vue": "^2.5.2",
     "vue-router": "^3.5.3"

@@ -22,7 +22,7 @@ export const routes = [
       {
         path: "bigScreen",
         name: "bigScreen",
-        component: () => import("@/views/big-screen/bigScreen"),
+        component: () => import("@/views/big-screen/index"),
         meta: { title: "bigScreen", icon: "bigScreen" }
       }
     ]
