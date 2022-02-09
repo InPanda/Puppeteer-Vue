@@ -1,290 +1,113 @@
 <template>
-  <div>
-    <Echart
-      id="centreLeft2Chart"
-      ref="centreLeft2ChartRef"
-      :options="options"
-      height="360px"
-      width="330px"
-    ></Echart>
+  <div class="hello">
+    <!-- 初始化echarts需要个 有宽高的 盒子 -->
+    <div
+      ref="mapbox"
+      style="height:360px;width:330px"
+    ></div>
   </div>
 </template>
-
 <script>
-import Echart from '@/common/echart';
-export default {
-  data() {
-    return {
-      options: {},
-    };
+import echarts from 'echarts'
+import 'echarts/map/js/china.js'
+import china from '@/common/map/china.json'
+const option = {
+  title: {
+    text: "地图demo",
+    link: "",
+    subtext: "",
+    sublink: ""
   },
-  components: {
-    Echart,
-  },
-  props: {
-    cdata: {
-      type: Array,
-      default: () => [],
+  // ----------   series：地图数据可视化，添加data数据    ---------------------
+
+  series: [{
+    name: "确诊人数",
+    type: 'map', // 告诉echarts 要去渲染的是一个地图
+    map: 'china',// 告诉echarts  要去渲染中国地图
+    label: {    // 控制对应地区的汉字      
+      show: true,
+      color: '#333',// 控制地区名的字体颜色---黑色，省名字
+      fontSize: 10
     },
-  },
-  watch: {
-    cdata: {
-      handler(newData) {
-        // 设置点的位置(经纬度)
-        const geoCoordMap = {
-          厦门市: [118.11022, 24.490474, 20],
-          福州市: [119.206239, 26.275302, 20],
-          泉州市: [118.589421, 24.908853, 20],
-          漳州市: [117.561801, 24.510897, 20],
-          龙岩市: [116.82978, 25.391603, 20],
-          莆田市: [119.007558, 25.591011, 20],
-          三明市: [117.435001, 26.465444, 20],
-          南平市: [118.178459, 27.535627, 20],
-          宁德市: [119.527082, 27.15924, 20],
-        };
-        let seriesData = [
-          {
-            name: '厦门市',
-          },
-          {
-            name: '福州市',
-          },
-          {
-            name: '泉州市',
-          },
-          {
-            name: '漳州市',
-          },
-          {
-            name: '龙岩市',
-          },
-          {
-            name: '莆田市',
-          },
-          {
-            name: '三明市',
-          },
-          {
-            name: '南平市',
-          },
-          {
-            name: '宁德市',
-          },
-        ];
-        let convertData = function (data) {
-          let scatterData = [];
-          for (var i = 0; i < data.length; i++) {
-            var geoCoord = geoCoordMap[data[i].name];
-            if (geoCoord) {
-              scatterData.push({
-                name: data[i].name,
-                value: geoCoord.concat(data[i].value),
-              });
-            }
-          }
-          return scatterData;
-        };
-        this.options = {
-          showLegendSymbol: true,
-          tooltip: {
-            trigger: 'item',
-            textStyle: {
-              fontSize: 14,
-              lineHeight: 22,
-            },
-            position: point => {
-              // 固定在顶部
-              return [point[0] + 50, point[1] - 20];
-            },
-            // 如果需要自定义 tooltip样式，需要使用formatter
-            /*
-              formatter: params => {
-                return `<div style=""> ... </div>`
-              }
-            */
-          },
-          visualMap: {
-            min: 0,
-            max: 10,
-            show: false,
-            seriesIndex: 0,
-            // 颜色
-            inRange: {
-              color: ['rgba(41,166,206, .5)', 'rgba(69,117,245, .9)'],
-            },
-          },
-          // 底部背景
-          geo: {
-            show: true,
-            aspectScale: 0.85, //长宽比
-            zoom: 1.2,
-            top: '10%',
-            left: '16%',
-            map: '福建',
-            roam: false,
-            itemStyle: {
-              normal: {
-                areaColor: 'rgba(0,0,0,0)',
-                shadowColor: 'rgba(7,114,204, .8)',
-                shadowOffsetX: 5,
-                shadowOffsetY: 5,
-              },
-              emphasis: {
-                areaColor: '#00aeef',
-              },
-            },
-          },
-          series: [
-            {
-              name: '相关指数',
-              type: 'map',
-              aspectScale: 0.85, //长宽比
-              zoom: 1.2,
-              mapType: '福建', // 自定义扩展图表类型
-              top: '10%',
-              left: '16%',
-              itemStyle: {
-                normal: {
-                  color: 'red',
-                  areaColor: 'rgba(19,54,162, .5)',
-                  borderColor: 'rgba(0,242,252,.3)',
-                  borderWidth: 1,
-                  shadowBlur: 7,
-                  shadowColor: '#00f2fc',
-                },
-                emphasis: {
-                  areaColor: '#4f7fff',
-                  borderColor: 'rgba(0,242,252,.6)',
-                  borderWidth: 2,
-                  shadowBlur: 10,
-                  shadowColor: '#00f2fc',
-                },
-              },
-              label: {
-                formatter: params => `${params.name}`,
-                show: true,
-                position: 'insideRight',
-                textStyle: {
-                  fontSize: 14,
-                  color: '#efefef',
-                },
-                emphasis: {
-                  textStyle: {
-                    color: '#fff',
-                  },
-                },
-              },
-              data: newData,
-            },
-            {
-              type: 'effectScatter',
-              coordinateSystem: 'geo',
-              symbolSize: 7,
-              effectType: 'ripple',
-              legendHoverLink: false,
-              showEffectOn: 'render',
-              rippleEffect: {
-                period: 4,
-                scale: 2.5,
-                brushType: 'stroke',
-              },
-              zlevel: 1,
-              itemStyle: {
-                normal: {
-                  color: '#99FBFE',
-                  shadowBlur: 5,
-                  shadowColor: '#fff',
-                },
-              },
-              data: convertData(seriesData),
-            },
-          ],
-        };
-        // 重新选择区域
-        this.handleMapRandomSelect();
+    itemStyle: {      // 地图板块的颜色和边框---灰色，各个省界线
+      areaColor: '#eee',
+      // borderColor:'blue'
+    },
+    roam: true,
+    zoom: 1.2,// 控制地图的放大和缩小
+    emphasis: {    // 控制鼠标滑过之后的背景色和字体颜色--白色       
+      label: {
+        color: '#fff',
+        fontSize: 12
       },
-      immediate: true,
-      deep: true,
-    },
-  },
-  methods: {
-    // 开启定时器
-    startInterval() {
-      const _self = this;
-      // 应通过接口获取配置时间，暂时写死5s
-      const time = 2000;
-      if (this.intervalId !== null) {
-        clearInterval(this.intervalId);
+      itemStyle: {
+        areaColor: '#83b5e7'   //  滑动到哪个地区就显示蓝色
       }
-      this.intervalId = setInterval(() => {
-        _self.reSelectMapRandomArea();
-      }, time);
     },
-    // 重新随机选中地图区域
-    reSelectMapRandomArea() {
-      const length = 9;
-      this.$nextTick(() => {
-        try {
-          const map = this.$refs.centreLeft2ChartRef.chart;
-          let index = Math.floor(Math.random() * length);
-          while (index === this.preSelectMapIndex || index >= length) {
-            index = Math.floor(Math.random() * length);
-          }
-          map.dispatchAction({
-            type: 'mapUnSelect',
-            seriesIndex: 0,
-            dataIndex: this.preSelectMapIndex,
-          });
-          map.dispatchAction({
-            type: 'showTip',
-            seriesIndex: 0,
-            dataIndex: index,
-          });
-          map.dispatchAction({
-            type: 'mapSelect',
-            seriesIndex: 0,
-            dataIndex: index,
-          });
-          this.preSelectMapIndex = index;
-        } catch (error) {
-          console.log(error)
-        }
-      });
+    data: []    // 用来展示后台给的数据的 {name:xx,value:xxx}
+  }],
+
+  //-----------    visualMap：视觉映射，每个颜色代表什么含义   -----------------------------
+  visualMap: [{
+    type: 'piecewise',
+    show: true,
+    // splitNumber:4
+    pieces: [           // 分段
+      { min: 10000 },
+      { min: 1000, max: 9999 },
+      { min: 100, max: 999 },
+      { min: 10, max: 99 },
+      { min: 1, max: 9 }
+    ],
+    // align:'right',// 默认left
+    // orient:'horizontal' 默认竖直
+    // left right 这些属性控制 分段坐在的位置
+    // showLabel:false
+    // textStyle:{}
+    inRange: {
+      symbol: 'rect',
+      color: ['#ffc0b1', '#9c0505']   //   浅红~~深红色
     },
-    handleMapRandomSelect() {
-      this.$nextTick(() => {
-        try {
-          const map = this.$refs.centreLeft2ChartRef.chart;
-          const _self = this;
-          setTimeout(() => {
-            _self.reSelectMapRandomArea();
-          }, 0);
-          // 移入区域，清除定时器、取消之前选中并选中当前
-          map.on('mouseover', function (params) {
-            clearInterval(_self.intervalId);
-            map.dispatchAction({
-              type: 'mapUnSelect',
-              seriesIndex: 0,
-              dataIndex: _self.preSelectMapIndex,
-            });
-            map.dispatchAction({
-              type: 'mapSelect',
-              seriesIndex: 0,
-              dataIndex: params.dataIndex,
-            });
-            _self.preSelectMapIndex = params.dataIndex;
-          });
-          // 移出区域重新随机选中地图区域，并开启定时器
-          map.on('globalout', function () {
-            _self.reSelectMapRandomArea();
-            _self.startInterval();
-          });
-          this.startInterval();
-        } catch (error) {
-          console.log(error)
-        }
-      });
-    },
+    itemWidth: 20,
+    itemHeight: 10
+  }],
+
+  //-------------------------------------------------------------------
+  tooltip: {
+    trigger: 'item'
+  },
+  toolbox: {
+    show: true,
+    orient: 'vertical',
+    left: 'right',
+    top: 'center',
+    feature: {
+      // dataView: {readOnly: false},
+      // restore: {},
+      saveAsImage: {}
+    }
   },
 };
+
+export default {
+  name: 'ChinaMap',
+  data() {
+    return {
+      mychart: {}
+    }
+  },
+  mounted() {
+    this.getData();// 为什么不再created
+    this.mychart = echarts.init(this.$refs.mapbox);
+    this.mychart.setOption(option)
+  },
+  methods: {
+    getData() {
+      let list = china.data.list.map(item => ({ name: item.name, value: item.value }))
+      console.log(list);
+      option.series[0].data = list;
+    }
+  }
+}
+
 </script>
